@@ -10,7 +10,7 @@ import CheckedIcon from "@/public/icons/checked-icon.svg";
 import LocationIcon from "@/public/icons/location-icon.svg";
 import DownIcon from "@/public/icons/down-icon.svg";
 import LocationModal from "@/src/modals/location";
-import LoginModal from "@/src/modals/login"
+import LoginModal from "@/src/modals/login";
 
 const Header: React.FC = () => {
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
@@ -40,10 +40,12 @@ const Header: React.FC = () => {
 
   return (
     <>
-    <LocationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-    <header className="border-b border-silver bg-[#fff]">
-      <Container>
+      <LocationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <header className="border-b border-silver bg-[#fff] px-16">
         <nav className="h-20 flex items-center justify-between">
           <div className="flex items-center gap-12">
             <Link href="/">
@@ -74,10 +76,18 @@ const Header: React.FC = () => {
               </button>
             </div>
             <div>
-              <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 h-[45px] px-4 duration-200 rounded-xl bg-[#e4e6ea] hover:bg-[#d7dadf]">
-                <Image width={30} height={30} src={LocationIcon} alt="location icon" />
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="flex items-center gap-2 h-[45px] px-4 duration-200 rounded-xl bg-[#e4e6ea] hover:bg-[#d7dadf]"
+              >
+                <Image
+                  width={30}
+                  height={30}
+                  src={LocationIcon}
+                  alt="location icon"
+                />
                 <p className="font-medium">Manzilingiz</p>
-                <Image src={DownIcon} alt="down icon"/>
+                <Image src={DownIcon} alt="down icon" />
               </button>
             </div>
           </div>
@@ -112,14 +122,16 @@ const Header: React.FC = () => {
               </div>
             </div>
             <div>
-              <button onClick={() => setIsLoginOpen(true)} className="h-[45px] px-5 rounded-xl text-[18px] font-medium bg-[#e4e6ea] hover:bg-[#d7dadf] duration-200">
+              <button
+                onClick={() => setIsLoginOpen(true)}
+                className="h-[45px] px-5 rounded-xl text-[18px] font-medium bg-[#e4e6ea] hover:bg-[#d7dadf] duration-200"
+              >
                 Kirish
               </button>
             </div>
           </div>
         </nav>
-      </Container>
-    </header>
+      </header>
     </>
   );
 };

@@ -18,23 +18,33 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+  
+      const scriptId = "yandex-map-script";
+      let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+  
+      if (!script) {
+        script = document.createElement("script");
+        script.src = "https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=en_RU";
+        script.type = "text/javascript";
+        script.async = true;
+        script.id = scriptId;
+        document.head.appendChild(script);
+  
+        script.onload = () => {
+          if (window.ymaps) {
+            initMap();
+          }
+        };
+      } else {
+        if (window.ymaps) {
+          initMap();
+        }
+      }
     } else {
       document.body.style.overflow = "auto";
     }
-
-    const scriptId = "yandex-map-script";
-    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-    if (!script) {
-      script = document.createElement("script");
-      script.src = "https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=en_RU";
-      script.type = "text/javascript";
-      script.async = true;
-      script.id = scriptId;
-      document.head.appendChild(script);
-    }
-
-    const initMap = () => {
+  
+    function initMap(){
       const mapElement = document.getElementById("map");
       if (mapElement && window.ymaps) {
         window.ymaps.ready(() => {
@@ -45,20 +55,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         });
       }
     };
-
-    script.onload = () => {
-      if (window.ymaps) {
-        initMap();
-      }
-    };
-
-    document.head.appendChild(script);
-
+  
     return () => {
-      document.head.removeChild(script);
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
+  
 
   if (!isOpen) return null;
 
