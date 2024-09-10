@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/icons/logo.png";
-import Container from "../container";
 import SearchIcon from "@/public/icons/search-icon.svg";
 import LangIcon from "@/public/icons/lang-icon.svg";
 import CheckedIcon from "@/public/icons/checked-icon.svg";
@@ -45,7 +44,7 @@ const Header: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
       />
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-      <header className="border-b border-silver bg-[#fff] px-16">
+      <header className="border-b border-silver bg-[#fff] px-10">
         <nav className="h-20 flex items-center justify-between">
           <div className="flex items-center gap-12">
             <Link href="/">
