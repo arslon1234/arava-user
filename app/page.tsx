@@ -1,7 +1,10 @@
+
 export default function Home() {
   return (
-    <main>
-      <h1 className="text-red-500 text-[20px] font-bold">Hello world</h1>
-    </main>
+    <div className='flex justify-center items-center h-[100vh] bg-[#f8f9fa]'>
+      <h1 className='text-center text-[2rem] font-bold'>
+        Arava Shop
+      </h1>
+    </div>
   );
 }

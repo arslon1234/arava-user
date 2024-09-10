@@ -44,7 +44,7 @@ const Header: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
       />
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-      <header className="border-b border-silver bg-[#fff] px-10">
+      <header className="border-b border-silver bg-[#fff] px-10 fixed top-0 w-full">
         <nav className="h-20 flex items-center justify-between">
           <div className="flex items-center gap-12">
             <Link href="/">
@@ -97,7 +97,7 @@ const Header: React.FC = () => {
                 className="flex flex-col items-center cursor-pointer hover:opacity-60 duration-200"
               >
                 <Image src={LangIcon} alt="language icon" />
-                <p className="text-[14px] font-medium">O'zbek</p>
+                <p className="text-[14px] font-medium">Uzbek</p>
               </button>
               <div
                 className={`absolute top-full mt-2 w-[145px] -right-[50%] bg-white flex flex-col justify-start rounded-[10px] shadow-[0_0_20px_3px_#0000001A] overflow-hidden transition-all duration-300 ease-in-out transform ${
