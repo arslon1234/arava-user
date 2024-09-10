@@ -2,20 +2,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { GrDown, GrLanguage, GrLocation } from "react-icons/gr";
 import Logo from "@/public/icons/logo.png";
 import SearchIcon from "@/public/icons/search-icon.svg";
-import LangIcon from "@/public/icons/lang-icon.svg";
 import CheckedIcon from "@/public/icons/checked-icon.svg";
-import LocationIcon from "@/public/icons/location-icon.svg";
-import DownIcon from "@/public/icons/down-icon.svg";
 import LocationModal from "@/src/modals/location";
 import LoginModal from "@/src/modals/login";
 
 const Header: React.FC = () => {
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [scrolling, setScrolling] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  const handleScroll = () => {
+    setScrolling(window.scrollY > 20);
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -25,6 +28,13 @@ const Header: React.FC = () => {
       setLanguageDropdownOpen(false);
     }
   };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     if (languageDropdownOpen) {
@@ -44,7 +54,11 @@ const Header: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
       />
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-      <header className="border-b border-silver bg-[#fff] px-10 fixed top-0 w-full">
+      <header
+        className={`border-b border-silver bg-[#fff] px-10 fixed top-0 w-full transition-shadow duration-300 z-40 ${
+          scrolling ? "shadow-[0_0_25px_0px_#00000023]" : ""
+        }`}
+      >
         <nav className="h-20 flex items-center justify-between">
           <div className="flex items-center gap-12">
             <Link href="/">
@@ -79,14 +93,11 @@ const Header: React.FC = () => {
                 onClick={() => setIsModalOpen(true)}
                 className="flex items-center gap-2 h-[45px] px-4 duration-200 rounded-xl bg-[#e4e6ea] hover:bg-[#d7dadf]"
               >
-                <Image
-                  width={30}
-                  height={30}
-                  src={LocationIcon}
-                  alt="location icon"
-                />
+                <div className="text-[20px]">
+                  <GrLocation />
+                </div>
                 <p className="font-medium">Manzilingiz</p>
-                <Image src={DownIcon} alt="down icon" />
+                <GrDown />
               </button>
             </div>
           </div>
@@ -96,7 +107,9 @@ const Header: React.FC = () => {
                 onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
                 className="flex flex-col items-center cursor-pointer hover:opacity-60 duration-200"
               >
-                <Image src={LangIcon} alt="language icon" />
+                <div className="text-[20px]">
+                  <GrLanguage/>
+                </div>
                 <p className="text-[14px] font-medium">Uzbek</p>
               </button>
               <div
