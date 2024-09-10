@@ -107,7 +107,7 @@ const Header: React.FC = () => {
                 }`}
               >
                 <button className="cursor-pointer flex items-center justify-between py-2 hover:bg-[#e4e6ea9d] duration-300 text-start px-4">
-                  <span className="font-medium">O'zbek</span>
+                  <span className="font-medium">Uzbek</span>
                   <span>
                     <Image src={CheckedIcon} alt="checked icon" />
                   </span>
