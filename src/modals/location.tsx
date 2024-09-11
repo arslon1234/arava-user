@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import Image from "next/image";
-import CancelIcon from "@/public/icons/cancel-icon.svg";
+import { GrClose } from "react-icons/gr";
 import "./style.css";
 
 declare global {
@@ -81,9 +80,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </h2>
         <button
           onClick={onClose}
-          className="text-gray-600 absolute opacity-70 top-3 right-4 p-[2px] duration-200 rounded-md hover:bg-[#e4e6ea]"
+          className="text-gray-700 absolute top-3 right-4 p-[6px] duration-200 rounded-md hover:bg-[#c8c9cb55]"
         >
-          <Image width={30} height={30} src={CancelIcon} alt="cancel icon" />
+          <GrClose/>
         </button>
 
         <div>
