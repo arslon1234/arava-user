@@ -15,7 +15,9 @@ function Ads() {
 
   const PrevArrow = ({ onClick }: any) => (
     <div
-      className={`slick-prev:before hidden slick-arrow absolute top-[40%] bg-[#fff] -left-[20px] ${loading ? "" : "md:flex"}`}
+      className={`slick-prev:before hidden slick-arrow absolute top-[40%] bg-[#fff] -left-[20px] ${
+        loading ? "" : "md:flex"
+      }`}
       onClick={onClick}
       style={{
         color: "#0ACC76",
@@ -34,10 +36,12 @@ function Ads() {
       </div>
     </div>
   );
-  
+
   const NextArrow = ({ onClick }: any) => (
     <div
-      className={`slick-next:before hidden slick-arrow absolute top-[40%] bg-[#fff] -right-[15px] ${loading? "" : "md:flex" }`}
+      className={`slick-next:before hidden slick-arrow absolute top-[40%] bg-[#fff] -right-[15px] ${
+        loading ? "" : "md:flex"
+      }`}
       onClick={onClick}
       style={{
         color: "#0ACC76",
@@ -109,47 +113,94 @@ function Ads() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000)
-  }, [])
+    }, 1000);
+  }, []);
 
   return (
-    <section className="pt-[130px] pb-16">
+    <section className="pt-[100px] lg:pt-[130px] pb-7 md:pb-12 lg:pb-16">
       <Container>
         <div>
           {loading ? (
-            <SlickSlider ref={sliderRef} {...settings}>
-              <div className="px-2">
-                <Skeleton style={{ borderRadius: "10px", height: "153px" }} />
+            <div className="mb-[6px]">
+              <SlickSlider ref={sliderRef} {...settings}>
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                </div>
               </div>
-              <div className="px-2">
-                <Skeleton style={{ borderRadius: "10px", height: "153px" }} />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                </div>
               </div>
-              <div className="px-2">
-                <Skeleton style={{ borderRadius: "10px", height: "153px" }} />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                </div>
               </div>
-              <div className="px-2">
-                <Skeleton style={{ borderRadius: "10px", height: "153px" }} />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                </div>
               </div>
-              <div className="px-2">
-                <Skeleton style={{ borderRadius: "10px", height: "153px" }} />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                </div>
+              </div>
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                </div>
               </div>
             </SlickSlider>
+            </div>
           ) : (
             <SlickSlider ref={sliderRef} {...settings}>
-              <div className="px-2">
-                <Image src={Banner} alt="banner" className="rounded-xl" />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
+                  <Image
+                    src={Banner}
+                    alt="banner"
+                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
+                  />
+                </div>
               </div>
-              <div className="px-2">
-                <Image src={Banner} alt="banner" className="rounded-xl" />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
+                  <Image
+                    src={Banner}
+                    alt="banner"
+                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
+                  />
+                </div>
               </div>
-              <div className="px-2">
-                <Image src={Banner} alt="banner" className="rounded-xl" />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
+                  <Image
+                    src={Banner}
+                    alt="banner"
+                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
+                  />
+                </div>
               </div>
-              <div className="px-2">
-                <Image src={Banner} alt="banner" className="rounded-xl" />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
+                  <Image
+                    src={Banner}
+                    alt="banner"
+                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
+                  />
+                </div>
               </div>
-              <div className="px-2">
-                <Image src={Banner} alt="banner" className="rounded-xl" />
+              <div className="px-[6px] sm:px-2">
+                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
+                  <Image
+                    src={Banner}
+                    alt="banner"
+                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
+                  />
+                </div>
               </div>
             </SlickSlider>
           )}
