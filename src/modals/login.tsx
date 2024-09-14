@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import { GrClose } from "react-icons/gr";
-import EyeOpenIcon from "@/public/icons/eye-open-icon.svg";
-import EyeCloseIcon from "@/public/icons/eye-close-icon.svg";
 import "./style.css";
 
 interface ModalProps {
@@ -11,12 +8,9 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [errors, setErrors] = useState<{ email: string; password: string }>({
-    email: "",
-    password: "",
+  const [phone_number, setPhoneNumber] = useState("");
+  const [errors, setErrors] = useState<{ phone_number: string }>({
+    phone_number: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -27,55 +21,74 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       document.body.style.overflow = "auto";
     }
 
+    const input: HTMLInputElement | null = document.querySelector(".input");
+    if (input) {
+      input.focus();
+    }
+
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
+  const resetForm = () => {
+    setPhoneNumber("");
+    setErrors({ phone_number: "" });
+    setIsSubmitted(false);
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      handleClose();
     }
   };
 
-  const validateEmail = (email: string): string => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email) ? "" : "Email manzili noto‘g‘ri formatda.";
-  };
-
-  const validatePassword = (password: string): string => {
-    return password.length >= 5 ? "" : "Parol kamida 5 ta belgidan iborat bo'lishi kerak.";
+  const validatePhone = (phone_number: string): string => {
+    return phone_number.length > 15
+      ? ""
+      : "+998 XX XXX XXXX formatida kiriting";
   };
 
   const validateForm = () => {
-    const emailError = validateEmail(email);
-    const passwordError = validatePassword(password);
+    const phonenumberError = validatePhone(phone_number);
 
-    setErrors({ email: emailError, password: passwordError });
+    setErrors({ phone_number: phonenumberError });
 
-    return !emailError && !passwordError;
+    return !phonenumberError;
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newEmail = e.target.value;
-    setEmail(newEmail);
-    if (isSubmitted) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: validateEmail(newEmail),
-      }));
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newPhoneNumber = e.target.value;
+
+    if (!newPhoneNumber.startsWith("+998")) {
+      newPhoneNumber = "+998" + newPhoneNumber.replace(/[^\d]/g, "").substring(0, 9);
     }
-  };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
+    newPhoneNumber = newPhoneNumber.replace(/[^\d+]/g, "");
+
+    if (newPhoneNumber.length > 4) {
+      newPhoneNumber = newPhoneNumber.slice(0, 4) + " " + newPhoneNumber.slice(4);
+    }
+    if (newPhoneNumber.length > 7) {
+      newPhoneNumber = newPhoneNumber.slice(0, 7) + " " + newPhoneNumber.slice(7);
+    }
+    if (newPhoneNumber.length > 11) {
+      newPhoneNumber = newPhoneNumber.slice(0, 11) + " " + newPhoneNumber.slice(11);
+    }
+
+    setPhoneNumber(newPhoneNumber);
+
     if (isSubmitted) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        password: validatePassword(newPassword),
+        phone_number: validatePhone(newPhoneNumber),
       }));
     }
   };
@@ -83,8 +96,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitted(true);
+    const value = phone_number.replace(/\s+/g, "");
     if (validateForm()) {
-      console.log(e.target);
+      console.log(value);
     }
   };
 
@@ -93,63 +107,45 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black duration-200 bg-opacity-30"
       onClick={handleOverlayClick}
     >
-      <div className="bg-white relative rounded-xl shadow-lg max-w-[450px] w-full modal-enter p-5">
-        <h2 className="text-[20px] font-semibold mb-7">Kirish</h2>
+      <div className="bg-white relative rounded-xl shadow-lg max-w-[350px] md:max-w-[450px] w-full modal-enter p-6 md:p-8 mx-5">
+        <h2 className="text-[20px] font-semibold w-[90%] mb-4 md:mb-7">
+          Telefon raqamingizni kiriting
+        </h2>
         <button
-          onClick={onClose}
-          className="text-gray-700 absolute top-3 right-4 p-[6px] duration-200 rounded-md hover:bg-[#c8c9cbc0]"
+          onClick={handleClose}
+          className="text-gray-700 absolute top-3 right-4 p-[6px] duration-200 rounded-md hover:bg-[#c8c9cb55]"
         >
-          <GrClose/>
+          <GrClose />
         </button>
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-6 relative">
+          <div className="mb-4 md:mb-6 relative">
             <input
               className={`border-2 ${
-                errors.email ? "border-red-500" : "border-gray-400"
-              } focus:border-mainColor rounded-xl py-2 px-3 w-full focus:outline-none`}
-              type="email"
-              placeholder="Emailingizni kiriting..."
-              value={email}
-              onChange={handleEmailChange}
+                errors.phone_number
+                  ? "border-red-500 focus:border-red-500"
+                  : "border-gray-400"
+              } input focus:border-mainColor rounded-lg md:rounded-xl py-2 px-3 w-full focus:outline-none`}
+              type="text"
+              placeholder="Telefon raqami"
+              value={phone_number}
+              onChange={handlePhoneChange}
+              maxLength={16}
             />
-            {errors.email && (
-              <p className="absolute text-red-500 text-sm">{errors.email}</p>
-            )}
-          </div>
-
-          <div className="mb-7 relative">
-            <input
-              className={`border-2 ${
-                errors.password ? "border-red-500" : "border-gray-400"
-              } focus:border-mainColor rounded-xl py-2 px-3 w-full focus:outline-none`}
-              type={passwordVisible ? "text" : "password"}
-              placeholder="Parolingizni kiriting..."
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            <button
-              type="button"
-              onClick={() => setPasswordVisible(!passwordVisible)}
-              className="absolute right-3 top-[9px] focus:outline-none opacity-70"
-            >
-              <Image
-                width={25}
-                height={25}
-                src={passwordVisible ? EyeOpenIcon : EyeCloseIcon}
-                alt={passwordVisible ? "Hide password" : "Show password"}
-              />
-            </button>
-            {errors.password && (
-              <p className="absolute left-0 text-red-500 text-sm">
-                {errors.password}
+            {errors.phone_number && (
+              <p className="absolute text-red-500 text-[13px]">
+                {errors.phone_number}
               </p>
             )}
           </div>
 
           <button
+            disabled={phone_number.length > 0 ? false : true}
             type="submit"
-            className="w-full h-[45px] rounded-xl bg-mainColor hover:bg-[#23b574] duration-200 text-white text-[18px] font-medium"
+            className={`w-full h-[35px] md:h-[45px] rounded-lg md:rounded-xl duration-200 text-white md:text-[18px] font-medium ${
+              phone_number === "" ?
+              "bg-[#d7d9db]" : "bg-mainColor hover:bg-[#23b574]"
+            }`}
           >
             Kirish
           </button>

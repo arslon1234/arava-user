@@ -1,4 +1,16 @@
 /* For fade-in and scale-up effect */
+.ymaps-2-1-79-map-copyrights-promo {
+  display: none;
+}
+
+.ymaps-2-1-79-searchbox {
+  display: none;
+}
+
+.ymaps-2-1-79-controls__toolbar_right{
+  display: none;
+}
+
 @keyframes modalOpen {
     from {
       opacity: 0;
