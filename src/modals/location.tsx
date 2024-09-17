@@ -55,9 +55,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       );
       const data = await response.json();
     
-      // Extracting only the relevant parts of the address like city and country
       const address = data.address;
-      console.log(address);
       const shortLocationName = `${address.neighbourhood || address.residential || address.county || address.city ||  address.state || "" } ${address.house_number || address.road || address.hamlet || ""}`;
       
       setLocationName(shortLocationName);

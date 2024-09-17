@@ -20,7 +20,7 @@ const Restourants = () => {
   }, []);
 
   return (
-    <section className="pb-28">
+    <section className="pb-14 md:pb-24">
       <Container>
         <div className="w-full relative flex items-center mb-4 lg:hidden">
           <Image

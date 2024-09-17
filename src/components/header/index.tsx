@@ -55,7 +55,7 @@ const Header: React.FC = () => {
       />
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
       <header
-        className={`border-b border-silver pt-2 sm:pb-1 bg-[#fff] px-5 xl:px-10 fixed top-0 w-full transition-shadow duration-300 z-40 ${
+        className={`border-b border-silver sm:pb-1 bg-[#fff] px-5 xl:px-10 fixed top-0 w-full transition-shadow duration-300 z-40 ${
           scrolling ? "shadow-[0_0_25px_0px_#00000023]" : ""
         }`}
       >
@@ -64,7 +64,7 @@ const Header: React.FC = () => {
             <Link href="/">
               <div className="flex items-center gap-[10px]">
                 <Image
-                  className="rounded-[10px] overflow-hidden w-[40px] md:w-[50px] h-[40px] md:h-[50px]"
+                  className="rounded-[10px] overflow-hidden w-[45px] md:w-[50px] h-[45px] md:h-[50px]"
                   src={Logo}
                   alt="arava logo"
                 />
@@ -105,7 +105,7 @@ const Header: React.FC = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 h-[35px] px-2 duration-200 rounded-lg bg-[#e4e6ea] hover:bg-[#d7dadf]"
+              className="flex items-center gap-2 h-[40px] px-2 duration-200 rounded-lg bg-[#e4e6ea] lg:hover:bg-[#d7dadf]"
             >
               <div className="text-[20px]">
                 <GrLocation />
@@ -119,12 +119,12 @@ const Header: React.FC = () => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
-                className="flex flex-col items-center cursor-pointer hover:opacity-60 duration-200"
+                className="flex flex-col items-center cursor-pointer opacity-80 lg:hover:opacity-60 duration-200"
               >
-                <div className="text-[18px] md:text-[20px]">
+                <div className="text-[20px]">
                   <GrLanguage />
                 </div>
-                <p className="text-[12px] md:text-[14px] font-medium">Uzbek</p>
+                <p className="text-[14px] font-medium">Uzbek</p>
               </button>
               <div
                 className={`absolute top-full mt-1 md:mt-2 w-[130px] md:w-[145px] -right-[50%] bg-white flex flex-col justify-start rounded-[10px] shadow-[0_0_20px_3px_#0000001A] overflow-hidden transition-all duration-300 ease-in-out transform ${
