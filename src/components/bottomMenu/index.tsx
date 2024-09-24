@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { KnifeForkIcon, BoxIcon, UserIcon, OrderIcon } from "@/public/icons/icon";
@@ -8,9 +8,13 @@ import { useTranslation } from "react-i18next";
 const BottomMenu = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const { t } = useTranslation()
-
+  if (!mounted) return null;
   return (
     <div className="fixed bottom-0 w-full bg-white shadow-[0_-5px_20px_#D7D7D766] rounded-t-3xl md:hidden px-4 z-50">
       <div className="flex items-end justify-between">

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
 import { TbTruckDelivery } from "react-icons/tb";
@@ -14,13 +14,16 @@ import "react-loading-skeleton/dist/skeleton.css";
 import BranchStore from "@/src/store/branchs";
 
 const Restourants = () => {
+  const [mounted, setMounted] = useState(false)
   const { getBranchs, isLoading, branches } = BranchStore();
   useEffect(() => {
     getBranchs();
   }, []);
-
-  const { t } = useTranslation()
-
+  const { t } = useTranslation();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
   return (
     <section className="pb-14 md:pb-24">
       <Container>
@@ -33,7 +36,7 @@ const Restourants = () => {
           <input
             className="h-full py-[10px] rounded-lg pl-11 pr-5 w-full outline-none ring-1 ring-[#9CA3AF] focus:ring-mainColor duration-200"
             type="text"
-            placeholder={t('search_placeholder')}
+            placeholder={t("search_placeholder")}
           />
         </div>
         <div className="pb-4 md:pb-5">
@@ -43,7 +46,7 @@ const Restourants = () => {
             </div>
           ) : (
             <h1 className="text-[28px] sm:text-[35px] lg:text-[45px] font-bold">
-              {t('restaurants')}
+              {t("restaurants")}
             </h1>
           )}
         </div>
