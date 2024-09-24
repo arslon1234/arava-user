@@ -1,0 +1,21 @@
+{
+  "your_location": "Manzilingiz",
+  "search_placeholder": "Qidiruv...",
+  "header_search_button": "Topish",
+  "header_login_button": "Kirish",
+  "location_modal_title": "Yetkazish manzilini koʻrsating",
+  "location_modal_button": "Tasdiqlash",
+  "login_modal_title": "Telefon raqamingizni kiriting",
+  "login_modal_phone_number": "Telefon raqam",
+  "activate_modal_title": "Tasdiqlash kodini kiriting",
+  "restaurants": "Restoranlar",
+  "back": "Orqaga",
+  "soum": "so`m",
+  "cart": "Savat",
+  "delete_cart": "Tozalash",
+  "add_to_cart": "Qo`shish",
+  "bottom_menu_restaurants": "Restoranlar",
+  "bottom_menu_cart": "Savat",
+  "bottom_menu_orders": "Buyurtmalar",
+  "bottom_menu_profile": "Profil"
+}

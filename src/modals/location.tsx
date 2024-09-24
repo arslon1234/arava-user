@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { GrClose } from "react-icons/gr";
 import LocationIcon from "@/public/icons/Location.svg";
-import "./style.css";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 declare global {
   interface Window {
@@ -17,14 +17,17 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [locationName, setLocationName] = useState("");
-
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const { t } = useTranslation();
+  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-
+  
       const scriptId = "yandex-map-script";
       let script = document.getElementById(scriptId) as HTMLScriptElement | null;
-
+  
       if (!script) {
         script = document.createElement("script");
         script.src =
@@ -33,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         script.async = true;
         script.id = scriptId;
         document.head.appendChild(script);
-
+  
         script.onload = () => {
           if (window.ymaps) {
             initMap();
@@ -48,48 +51,83 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       document.body.style.overflow = "auto";
       setLocationName("");
     }
-
+  
     async function fetchLocationName(lat: number, lon: number) {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
       );
       const data = await response.json();
-    
+  
       const address = data.address;
-      const shortLocationName = `${address.neighbourhood || address.residential || address.county || address.city ||  address.state || "" } ${address.house_number || address.road || address.hamlet || ""}`;
-      
+      const shortLocationName = `${
+        address.neighbourhood ||
+        address.residential ||
+        address.county ||
+        address.city ||
+        address.state ||
+        ""
+      } ${address.house_number || address.road || address.hamlet || ""}`;
+  
       setLocationName(shortLocationName);
     }
-    
-
+  
     function initMap() {
+      const savedCoordinates = localStorage.getItem("location_coordinates");
       const mapElement = document.getElementById("map");
+    
+      let center = [41.315255, 69.246486];
+      let zoom = 12;
+    
+      if (savedCoordinates) {
+        const { lat, lon } = JSON.parse(savedCoordinates);
+        center = [lat, lon];
+        zoom = 17;
+        setLatitude(lat);
+        setLongitude(lon);
+        fetchLocationName(lat, lon);
+      }
+    
       if (mapElement && window.ymaps) {
         window.ymaps.ready(() => {
           const map = new window.ymaps.Map("map", {
-            center: [41.315255, 69.246486],
-            zoom: 12,
+            center,
+            zoom,
           });
-
+    
           const updateCenterCoordinates = () => {
             const newCenter = map.getCenter();
+            setLatitude(newCenter[0]);
+            setLongitude(newCenter[1]);
             fetchLocationName(newCenter[0], newCenter[1]);
           };
-
+    
           map.events.add("boundschange", updateCenterCoordinates);
         });
       }
     }
-
+    
+  
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
+  
 
   if (!isOpen) return null;
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  const saveLocation = () => {
+    if (latitude !== null && longitude !== null) {
+      localStorage.setItem("location_name", locationName);
+      localStorage.setItem(
+        "location_coordinates",
+        JSON.stringify({ lat: latitude, lon: longitude })
+      );
       onClose();
     }
   };
@@ -101,7 +139,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     >
       <div className="bg-white relative rounded-xl shadow-lg max-w-[800px] w-full modal-enter p-4 md:p-7 mx-5">
         <h2 className="text-[20px] md:text-[24px] w-[90%] font-semibold mb-3">
-          Yetkazish manzilini koʻrsating
+          {t("location_modal_title")}
         </h2>
         <button
           onClick={onClose}
@@ -147,8 +185,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               />
             </div>
           </div>
-          <button className="w-full text-white text-[18px] font-medium bg-mainColor rounded-lg py-2 hover:bg-[#23b574] duration-200">
-            Manzilni qo`shish
+          <button
+            disabled={locationName.length === 0}
+            onClick={saveLocation}
+            className={`w-full text-white text-[18px] font-medium rounded-lg py-2 duration-200 ${
+              locationName.length === 0
+                ? "bg-[#d7d9db]"
+                : "bg-mainColor active:bg-[#23b574] md:hover:bg-[#23b574]"
+            }`}
+          >
+            {t("location_modal_button")}
           </button>
         </div>
       </div>

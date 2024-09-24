@@ -1,5 +1,6 @@
-"use client";
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import { useTranslation } from 'next-i18next';
 import Link from "next/link";
 import Image from "next/image";
 import { GrDown, GrLanguage, GrLocation } from "react-icons/gr";
@@ -9,22 +10,36 @@ import SearchIcon from "@/public/icons/search-icon.svg";
 import LocationModal from "@/src/modals/location";
 import LoginModal from "@/src/modals/login";
 
-const Header: React.FC = () => {
+export default function Header() {
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
+  const [locationName, setLocationName] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+
+  const { t, i18n } = useTranslation("common");
+
+  useEffect(() => {
+    const storedLocation = localStorage.getItem("location_name");
+    if (storedLocation) {
+      setLocationName(storedLocation);
+    }
+  }, []);
+
+  const handleLanguageChange = (lang: string) => {
+    i18n.changeLanguage(lang);
+    router.push(router.asPath, router.asPath, { locale: lang });
+    setLanguageDropdownOpen(false);
+  };
 
   const handleScroll = () => {
     setScrolling(window.scrollY > 20);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setLanguageDropdownOpen(false);
     }
   };
@@ -49,13 +64,11 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <LocationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <LocationModal isOpen={isLocationModalOpen} onClose={() => setIsLocationModalOpen(false)} />
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      
       <header
-        className={`border-b border-silver sm:pb-1 bg-[#fff] px-5 xl:px-10 fixed top-0 w-full transition-shadow duration-300 z-40 ${
+        className={`border-b border-silver sm:pb-1 bg-[#fff] px-5 xl:px-10 fixed top-0 w-full transition-shadow duration-300 z-30 ${
           scrolling ? "shadow-[0_0_25px_0px_#00000023]" : ""
         }`}
       >
@@ -68,35 +81,27 @@ const Header: React.FC = () => {
                   src={Logo}
                   alt="arava logo"
                 />
-                <p className="text-[24px] font-semibold hidden min-[1100px]:block">
-                  Aravva
-                </p>
+                <p className="text-[24px] font-semibold hidden min-[1100px]:block">Aravva</p>
               </div>
             </Link>
             <div className="h-[45px] w-auto relative hidden lg:flex items-center">
-              <Image
-                className="absolute opacity-50 left-3 top-3"
-                src={SearchIcon}
-                alt="search icon"
-              />
+              <Image className="absolute opacity-50 left-3 top-3" src={SearchIcon} alt="search icon" />
               <input
                 className="h-full rounded-l-xl pl-11 pr-5 max:w-[365px] xl:w-[365px] outline-none ring-1 ring-[#9CA3AF] focus:ring-mainColor duration-200"
                 type="text"
-                placeholder="Restoran, taom va mahsulotlarni toping"
+                placeholder={t("search_placeholder")}
               />
               <button className="h-full bg-mainColor hover:bg-[#23b574] duration-200 ring-1 ring-mainColor hover:ring-[#23b574] px-3 rounded-r-xl text-white text-[18px] font-medium">
-                Topish
+                {t("header_search_button")}
               </button>
             </div>
             <div className="hidden md:block">
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsLocationModalOpen(true)}
                 className="flex items-center gap-2 h-[45px] px-4 duration-200 rounded-xl bg-[#e4e6ea] hover:bg-[#d7dadf]"
               >
-                <div className="text-[20px]">
-                  <GrLocation />
-                </div>
-                <p className="font-medium">Manzilingiz</p>
+                <GrLocation className="text-[20px]" />
+                <p className="font-medium max-w-[130px] line-clamp-1">{locationName || "Manzilingiz"}</p>
                 <GrDown />
               </button>
             </div>
@@ -104,13 +109,11 @@ const Header: React.FC = () => {
 
           <div className="md:hidden">
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsLocationModalOpen(true)}
               className="flex items-center gap-2 h-[40px] px-2 duration-200 rounded-lg bg-[#e4e6ea] lg:hover:bg-[#d7dadf]"
             >
-              <div className="text-[20px]">
-                <GrLocation />
-              </div>
-              <p className="font-medium text-[14px]">Manzilingiz</p>
+              <GrLocation className="text-[20px]" />
+              <p className="font-medium text-[14px]">{locationName || "Manzilingiz"}</p>
               <GrDown />
             </button>
           </div>
@@ -121,11 +124,12 @@ const Header: React.FC = () => {
                 onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
                 className="flex flex-col items-center cursor-pointer opacity-80 lg:hover:opacity-60 duration-200"
               >
-                <div className="text-[20px]">
-                  <GrLanguage />
-                </div>
-                <p className="text-[14px] font-medium">Uzbek</p>
+                <GrLanguage className="text-[20px]" />
+                <p className="text-[14px] font-medium">
+                  {i18n.language === "uz" ? "Uzbek" : i18n.language === "ru" ? "Русский" : "English"}
+                </p>
               </button>
+
               <div
                 className={`absolute top-full mt-1 md:mt-2 w-[130px] md:w-[145px] -right-[50%] bg-white flex flex-col justify-start rounded-[10px] shadow-[0_0_20px_3px_#0000001A] overflow-hidden transition-all duration-300 ease-in-out transform ${
                   languageDropdownOpen
@@ -133,26 +137,27 @@ const Header: React.FC = () => {
                     : "-translate-y-5 opacity-0 pointer-events-none"
                 }`}
               >
-                <button className="cursor-pointer flex items-center justify-between py-[6px] md:py-2 hover:bg-[#e4e6ea9d] duration-300 text-start px-4">
-                  <span className="font-medium text-[14px] md:text-[16px]">Uzbek</span>
-                  <span className="text-[14px] md:text-[16px]">
-                    <FaCheck />
-                  </span>
-                </button>
-                <button className="cursor-pointer flex items-center justify-between py-[6px] md:py-2 hover:bg-[#e4e6ea9d] duration-300 text-start px-4">
-                  <span className="font-medium text-[14px] md:text-[16px]">Русский</span>
-                </button>
-                <button className="cursor-pointer flex items-center justify-between py-[6px] md:py-2 hover:bg-[#e4e6ea9d] duration-300 text-start px-4">
-                  <span className="font-medium text-[14px] md:text-[16px]">English</span>
-                </button>
+                {["uz", "ru", "en"].map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => handleLanguageChange(lang)}
+                    className="cursor-pointer flex items-center justify-between py-[6px] md:py-2 hover:bg-[#e4e6ea9d] duration-300 text-start px-4"
+                  >
+                    <span className="font-medium text-[14px] md:text-[16px]">
+                      {lang === "uz" ? "Uzbek" : lang === "ru" ? "Русский" : "English"}
+                    </span>
+                    {i18n.language === lang && <FaCheck className="text-[14px] md:text-[16px]" />}
+                  </button>
+                ))}
               </div>
             </div>
+
             <div className="hidden md:block">
               <button
-                onClick={() => setIsLoginOpen(true)}
+                onClick={() => setIsLoginModalOpen(true)}
                 className="h-[45px] px-5 rounded-xl text-[18px] font-medium bg-[#e4e6ea] hover:bg-[#d7dadf] duration-200"
               >
-                Kirish
+                {t("header_login_button")}
               </button>
             </div>
           </div>
@@ -160,6 +165,4 @@ const Header: React.FC = () => {
       </header>
     </>
   );
-};
-
-export default Header;
+}

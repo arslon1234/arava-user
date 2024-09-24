@@ -1,0 +1,22 @@
+{
+  "your_location": "Your address",
+  "search_placeholder": "Search...",
+  "header_search_button": "Search",
+  "header_login_button": "Login",
+  "location_modal_title": "Specify a delivery address",
+  "location_modal_button": "Confirm",
+  "login_modal_title": "Enter your phone number",
+  "login_modal_phone_number": "Phone number",
+  "activate_modal_title": "Enter confirmation code",
+  "restaurants": "Restaurants",
+  "back": "Back",
+  "soum": "soum",
+  "cart": "Cart",
+  "delete_cart": "Delete",
+  "add_to_cart": "Add",
+  "bottom_menu_restaurants": "Restaurants",
+  "bottom_menu_cart": "Cart",
+  "bottom_menu_orders": "Orders",
+  "bottom_menu_profile": "Profile"
+}
+  
