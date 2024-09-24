@@ -1,6 +1,7 @@
-"use client";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Skeleton from "react-loading-skeleton";
 import { IoIosArrowBack } from "react-icons/io";
@@ -8,23 +9,31 @@ import { MdOutlineStar } from "react-icons/md";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { ImInfo } from "react-icons/im";
 import { TbTruckDelivery } from "react-icons/tb";
+import Header from "@/src/components/header";
+import BottomMenu from "@/src/components/bottomMenu";
 import Container from "@/src/containers/container";
 import Footer from "@/src/components/footer";
 import ProductCard from "@/src/components/productCard";
 import ProductImage from "@/public/images/product-image.jpg";
+import { useTranslation } from "react-i18next";
 
 import "react-loading-skeleton/dist/skeleton.css";
 
-const Index = () => {
+export default function StorePage({ id }: { id: string }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
+
+  const { t } = useTranslation();
+
   return (
     <>
+      <Header />
       <section className="pt-[100px] lg:pt-[130px]">
         <Container>
           <div className="flex items-start justify-between gap-10 lg:gap-14">
@@ -36,7 +45,7 @@ const Index = () => {
                 <span>
                   <IoIosArrowBack />
                 </span>
-                <span>Orqaga</span>
+                <span>{t("back")}</span>
               </button>
               {loading ? (
                 <div className="w-full h-[260px] sm:h-[300px] md:h-[340px] lg:h-[380px] mb-10">
@@ -127,7 +136,7 @@ const Index = () => {
                 ) : (
                   <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                     <ProductCard
-                      image={ProductImage}
+                      image="https://webtest.aravva.uz/images/BCH3b74d8db862f45e0bb7d0df92b06b4e420240912.png"
                       title="Lavash"
                       price={40000}
                     />
@@ -177,7 +186,7 @@ const Index = () => {
             ) : (
               <div className="bg-[#fff] w-[28%] hidden md:block h-[600px] overflow-hidden border border-gray-300 rounded-3xl sticky top-[130px]">
                 <div className="md-3 sticky top-0 bg-white w-full p-3">
-                  <p className="text-[26px] font-semibold">Savat</p>
+                  <p className="text-[26px] font-semibold">{t("cart")}</p>
                 </div>
                 <div className="overflow-y-auto h-[540px] px-4">
                   <div className="w-full py-4 border-b border-gray-300 flex flex-col lg:flex-row gap-2 items-start justify-between">
@@ -205,7 +214,7 @@ const Index = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="texy-[17px]">40000 so`m</p>
+                      <p className="texy-[17px]">40000 {t("soum")}</p>
                     </div>
                   </div>
                   <div className="w-full py-4 border-b border-gray-300 flex flex-col lg:flex-row gap-2 items-start justify-between">
@@ -268,11 +277,11 @@ const Index = () => {
                 <div className="w-full p-3 border sticky bottom-0 bg-white">
                   <div className="flex items-center gap-3">
                     <TbTruckDelivery className="text-[20px]" />
-                    <p>Yetkazib berish 5000 so`m</p>
+                    <p>Yetkazib berish 5000 {t("soum")}</p>
                   </div>
                   <button className="bg-mainColor hover:bg-[#23b574] duration-200 w-full flex flex-col lg:flex-row items-center rounded-xl justify-between px-4 xl:px-5 py-2 xl:py-3 text-white mt-3 font-medium">
                     <p className="text-[14px] xl:text-[16px]">To`lov uchun</p>
-                    <p className="xl:text-[20px] text-[18px]">40000 so`m</p>
+                    <p className="xl:text-[20px] text-[18px]">40000 {t("soum")}</p>
                   </button>
                 </div>
               </div>
@@ -281,8 +290,24 @@ const Index = () => {
         </Container>
       </section>
       <Footer />
+      <BottomMenu/>
     </>
   );
-};
+}
 
-export default Index;
+// Fetch the props for each page
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  locale,
+}) => {
+  const { id } = params || {}; // Extract the dynamic `id` parameter from the URL
+
+  // You can fetch additional data here based on the `id`, e.g., from an API or database
+
+  return {
+    props: {
+      id,
+      ...(await serverSideTranslations(locale as string, ["common"])),
+    },
+  };
+};

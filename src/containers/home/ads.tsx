@@ -5,18 +5,24 @@ import Skeleton from "react-loading-skeleton";
 import Container from "../container";
 import Image from "next/image";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-import Banner from "@/public/images/banner.jpg";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "react-loading-skeleton/dist/skeleton.css";
 
+import GetBanners from "@/src/store/banners";
+
 function Ads() {
-  const [loading, setLoading] = React.useState(true);
+  const { getData, banners, isLoading } = GetBanners();
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const PrevArrow = ({ onClick }: any) => (
     <div
       className={`slick-prev:before hidden slick-arrow absolute top-[40%] bg-[#fff] -left-[20px] ${
-        loading ? "" : "md:flex"
+        isLoading ? "" : "md:flex"
       }`}
       onClick={onClick}
       style={{
@@ -40,7 +46,7 @@ function Ads() {
   const NextArrow = ({ onClick }: any) => (
     <div
       className={`slick-next:before hidden slick-arrow absolute top-[40%] bg-[#fff] -right-[15px] ${
-        loading ? "" : "md:flex"
+        isLoading ? "" : "md:flex"
       }`}
       onClick={onClick}
       style={{
@@ -69,19 +75,23 @@ function Ads() {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: banners.length > 4? true: false,
     autoplaySpeed: 3000,
     draggable: true,
-    swipe: true,
+    swipe: banners.length > 4? true: false,
     leftMode: true,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
+    prevArrow: banners.length > 4? <PrevArrow /> : false,
+    nextArrow: banners.length > 4? <NextArrow /> : false,
     responsive: [
       {
         breakpoint: 1536,
         settings: {
           slidesToShow: 4,
           slidesToScroll: 1,
+          autoplay: true,
+          prevArrow: <PrevArrow />,
+          nextArrow: <NextArrow />,
+          swipe: true,
         },
       },
       {
@@ -89,6 +99,8 @@ function Ads() {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 1,
+          autoplay: true,
+          swipe: true
         },
       },
       {
@@ -97,6 +109,8 @@ function Ads() {
           slidesToShow: 3,
           slidesToScroll: 1,
           centerMode: true,
+          autoplay: true,
+          swipe: true
         },
       },
       {
@@ -105,103 +119,79 @@ function Ads() {
           slidesToShow: 2,
           slidesToScroll: 1,
           centerMode: true,
+          autoplay: true,
+          swipe: true
         },
       },
     ],
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
-
   return (
     <section className="pt-[100px] lg:pt-[130px] pb-7 md:pb-12 lg:pb-16">
       <Container>
         <div>
-          {loading ? (
+          {isLoading ? (
             <div className="mb-[6px]">
               <SlickSlider ref={sliderRef} {...settings}>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
-                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                <div className="px-[6px] sm:px-2">
+                  <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                    <Skeleton
+                      style={{ borderRadius: "10px", height: "100%" }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
-                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                <div className="px-[6px] sm:px-2">
+                  <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                    <Skeleton
+                      style={{ borderRadius: "10px", height: "100%" }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
-                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                <div className="px-[6px] sm:px-2">
+                  <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                    <Skeleton
+                      style={{ borderRadius: "10px", height: "100%" }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
-                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                <div className="px-[6px] sm:px-2">
+                  <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                    <Skeleton
+                      style={{ borderRadius: "10px", height: "100%" }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
-                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                <div className="px-[6px] sm:px-2">
+                  <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                    <Skeleton
+                      style={{ borderRadius: "10px", height: "100%" }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
-                  <Skeleton style={{ borderRadius: "10px", height: "100%" }} />
+                <div className="px-[6px] sm:px-2">
+                  <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px]">
+                    <Skeleton
+                      style={{ borderRadius: "10px", height: "100%" }}
+                    />
+                  </div>
                 </div>
-              </div>
-            </SlickSlider>
+              </SlickSlider>
             </div>
           ) : (
             <SlickSlider ref={sliderRef} {...settings}>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
-                  <Image
-                    src={Banner}
-                    alt="banner"
-                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
-                  />
+              {banners?.map((item, index: number) => (
+                <div key={index} className="px-[6px] sm:px-2">
+                  <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
+                    <Image
+                      height={300}
+                      width={500}
+                      src={`https://webtest.aravva.uz${item.imageUrl}`}
+                      alt="banner"
+                      className="object-cover rounded-lg sm:rounded-xl w-full h-full"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
-                  <Image
-                    src={Banner}
-                    alt="banner"
-                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
-                  />
-                </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
-                  <Image
-                    src={Banner}
-                    alt="banner"
-                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
-                  />
-                </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
-                  <Image
-                    src={Banner}
-                    alt="banner"
-                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
-                  />
-                </div>
-              </div>
-              <div className="px-[6px] sm:px-2">
-                <div className="h-[70px] sm:h-[100px] lg:h-[140px] xl:h-[153px] rounded-xl">
-                  <Image
-                    src={Banner}
-                    alt="banner"
-                    className="object-cover rounded-lg sm:rounded-xl w-full h-full"
-                  />
-                </div>
-              </div>
+              ))}
             </SlickSlider>
           )}
         </div>

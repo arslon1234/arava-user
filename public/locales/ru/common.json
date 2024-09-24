@@ -1,0 +1,22 @@
+{
+  "your_location" : "Ваш адрес",
+  "search_placeholder": "Поиск...",
+  "header_search_button": "Поиск",
+  "header_login_button": "Войти",
+  "location_modal_title": "Укажите адрес доставки",
+  "location_modal_button": "Подтверждать",
+  "login_modal_title": "Введите свой номер телефона",
+  "login_modal_phone_number": "Номер телефона",
+  "activate_modal_title": "Введите код подтверждения",
+  "restaurants": "Рестораны",
+  "back": "Назад",
+  "soum": "сум",
+  "cart": "Корзина",
+  "delete_cart": "Очистить",
+  "add_to_cart": "Добавить",
+  "bottom_menu_restaurants": "Рестораны",
+  "bottom_menu_cart": "Корзина",
+  "bottom_menu_orders": "Заказы",
+  "bottom_menu_profile": "Профиль"
+}
+  
