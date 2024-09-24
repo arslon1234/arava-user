@@ -116,7 +116,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, phone, close }) => {
       <div className="bg-white relative z-50 rounded-xl shadow-lg max-w-[350px] md:max-w-[450px] w-full modal-enter p-6 md:p-8 mx-5">
         <h2 className="text-[20px] font-semibold w-[90%] mb-4 md:mb-7">
           {t("activate_modal_title")}
+        
         </h2>
+        <p>
+          title
+        </p>
         <button
           onClick={handleClose}
           className="text-gray-700 absolute top-3 right-4 p-[6px] duration-200 rounded-md hover:bg-[#c8c9cb55]"
