@@ -75,13 +75,13 @@ function Ads() {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
-    autoplay: banners.length > 4? true: false,
+    autoplay: banners?.length > 4? true: false,
     autoplaySpeed: 3000,
     draggable: true,
-    swipe: banners.length > 4? true: false,
+    swipe: banners?.length > 4? true: false,
     leftMode: true,
-    prevArrow: banners.length > 4? <PrevArrow /> : false,
-    nextArrow: banners.length > 4? <NextArrow /> : false,
+    prevArrow: banners?.length > 4? <PrevArrow /> : false,
+    nextArrow: banners?.length > 4? <NextArrow /> : false,
     responsive: [
       {
         breakpoint: 1536,
@@ -127,7 +127,7 @@ function Ads() {
   };
 
   return (
-    <section className="pt-[100px] lg:pt-[130px] pb-7 md:pb-12 lg:pb-16">
+    <section className="pt-[90px] lg:pt-[130px] pb-7 md:pb-12 lg:pb-16">
       <Container>
         <div>
           {isLoading ? (

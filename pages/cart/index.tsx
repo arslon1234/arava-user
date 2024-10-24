@@ -1,9 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
-import Header from "@/src/components/header";
-import BottomMenu from "@/src/components/bottomMenu";
 import Container from "@/src/containers/container";
 import Image from "next/image";
 import { FaMinus, FaPlus } from "react-icons/fa6";
@@ -12,12 +10,20 @@ import { TbTruckDelivery } from "react-icons/tb";
 import ProductImage from "@/public/images/product-image.jpg";
 
 const Cart = () => {
+  const { t } = useTranslation();
   const [cartItems, setCartItems] = useState([
     { id: 1, name: "Lavash", price: 40000, quantity: 1 },
     { id: 2, name: "Lavash", price: 40000, quantity: 1 },
     { id: 3, name: "Lavash", price: 40000, quantity: 1 },
     { id: 4, name: "Lavash", price: 40000, quantity: 1 },
   ]);
+
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null;
 
   const handleIncrement = (id: number) => {
     setCartItems(
@@ -41,12 +47,10 @@ const Cart = () => {
     return num.toLocaleString("fr-FR");
   };
 
-  const { t } = useTranslation();
 
   return (
     <>
-      <Header />
-      <section className="min-h-screen pt-[100px] lg:pt-[130px]">
+      <section className="min-h-screen pt-[90px] lg:pt-[130px] md:hidden">
         <Container>
           <div className="pb-[165px]">
             <div className="pb-4 flex items-center justify-between">
@@ -106,14 +110,14 @@ const Cart = () => {
             </div>
           </div>
         </Container>
-        <div className="w-full pt-3 pb-[70px] px-4 border-t border-gray-400 fixed bottom-0 bg-white">
+        <div className="w-full pt-3 pb-[75px] px-4 border-t border-gray-400 fixed bottom-0 bg-white">
           <div className="flex items-center gap-3">
             <TbTruckDelivery className="text-[20px]" />
-            <p>Yetkazib berish {formatNumber(5000)} {t("soum")}</p>
+            <p>{t("cart_delivery_title")} {formatNumber(5000)} {t("soum")}</p>
           </div>
-          <button className="bg-mainColor active:bg-[#23b574] duration-150 w-full flex items-center rounded-xl justify-between px-4 xl:px-5 py-2 xl:py-3 text-white mt-3 font-medium">
-            <p className="text-[14px] xl:text-[16px]">To`lov uchun</p>
-            <p className="xl:text-[20px] text-[18px]">
+          <button className="bg-mainColor active:bg-[#23b574] duration-150 w-full flex items-center rounded-2xl justify-between px-4 xl:px-5 h-[50px] text-white mt-3 font-medium">
+            <p className="text-[16px] font-bold">{t("cart_button")}</p>
+            <p className="xl:text-[20px] text-[18px] font-bold">
               {formatNumber(
                 cartItems.reduce(
                   (total, item) => total + item.price * item.quantity,
@@ -125,7 +129,6 @@ const Cart = () => {
           </button>
         </div>
       </section>
-      <BottomMenu />
     </>
   );
 };

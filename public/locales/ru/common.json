@@ -6,6 +6,7 @@
   "location_modal_title": "Укажите адрес доставки",
   "location_modal_button": "Подтверждать",
   "login_modal_title": "Введите свой номер телефона",
+  "login_modal_name" : "Имя",
   "login_modal_phone_number": "Номер телефона",
   "activate_modal_title": "Введите код подтверждения",
   "restaurants": "Рестораны",
@@ -14,9 +15,14 @@
   "cart": "Корзина",
   "delete_cart": "Очистить",
   "add_to_cart": "Добавить",
+  "cart_button": "Для оплаты",
+  "cart_delivery_title": "Доставка",
   "bottom_menu_restaurants": "Рестораны",
   "bottom_menu_cart": "Корзина",
   "bottom_menu_orders": "Заказы",
-  "bottom_menu_profile": "Профиль"
+  "bottom_menu_profile": "Профиль",
+  "profile_title": "Регистрация",
+  "profile_text": "Введите свой номер телефона, чтобы мы могли отправить вам код подтверждения",
+  "profile_text2": "Введите код подтверждения, отправленный на ваш номер телефона"
 }
   

@@ -1,166 +1,126 @@
 "use client";
-import React, { useState } from "react";
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Header from "@/src/components/header";
-import BottomMenu from "@/src/components/bottomMenu";
+import React, { useEffect, useState } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Skeleton from "react-loading-skeleton";
+import { auth } from "@/src/services/auth";
 import Container from "@/src/containers/container";
+import LoginModal from "@/src/modals/login";
+import Footer from "@/src/components/footer";
+import LogoutModal from "@/src/modals/logout";
 
-const Cart = () => {
-  const [name, setName] = useState("");
-  const [phone_number, setPhoneNumber] = useState("");
-  const [errors, setErrors] = useState<{ name: string; phone_number: string }>({
-    name: "",
-    phone_number: "",
-  });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const validatePhone = (phone_number: string): string => {
-    return phone_number.length === 16
-      ? ""
-      : "+998 XX XXX XXXX formatida kiriting";
-  };
-
-  const validateName = (name: string): string => {
-    return name.length >= 3 ? "" : "Ismingizni kiriting (kamida 3 ta belgi)";
-  };
-
-  const validateForm = () => {
-    const nameError = validateName(name);
-    const phonenumberError = validatePhone(phone_number);
-
-    setErrors({ name: nameError, phone_number: phonenumberError });
-
-    return !nameError && !phonenumberError;
-  };
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value;
-    setName(newName);
-
-    if (isSubmitted) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        name: validateName(newName),
-      }));
+const Profile = () => {
+  const [data, setData]: any = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const getData = async () => {
+    setIsLoading(true);
+    try {
+      const res = await auth.get_info();
+      setData(res?.data);
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
+  useEffect(() => {
+    getData();
+  }, []);
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newPhoneNumber = e.target.value;
-
-    if (!newPhoneNumber.startsWith("+998")) {
-      newPhoneNumber =
-        "+998" + newPhoneNumber.replace(/[^\d]/g, "").substring(0, 9);
-    }
-
-    newPhoneNumber = newPhoneNumber.replace(/[^\d+]/g, "");
-
-    if (newPhoneNumber.length > 4) {
-      newPhoneNumber =
-        newPhoneNumber.slice(0, 4) + " " + newPhoneNumber.slice(4);
-    }
-    if (newPhoneNumber.length > 7) {
-      newPhoneNumber =
-        newPhoneNumber.slice(0, 7) + " " + newPhoneNumber.slice(7);
-    }
-    if (newPhoneNumber.length > 11) {
-      newPhoneNumber =
-        newPhoneNumber.slice(0, 11) + " " + newPhoneNumber.slice(11);
-    }
-
-    setPhoneNumber(newPhoneNumber);
-
-    if (isSubmitted) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        phone_number: validatePhone(newPhoneNumber),
-      }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-    if (validateForm()) {
-      const formattedPhoneNumber = phone_number.replace(/\s+/g, "");
-      const formData = {
-        name: name,
-        phone_number: formattedPhoneNumber,
-      };
-      console.log(formData);
-    }
-  };
+  //   const handleChange = async (e: any) => {
+  //     e.preventDefault();
+  //     const newData = {
+  //       phone: data?.login,
+  //       firstname: e.target[0].value,
+  //       lastName: e.target[1].value
+  //     };
+  //     try {
+  //       const res = await auth.login(newData);
+  //       console.log(res);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
 
   return (
-    <>
-      <Header />
-      <section className="min-h-screen pt-[100px] lg:pt-[130px]">
+    <div className="hidden md:block">
+      <LoginModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} />
+      <LogoutModal isOpen={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)}/>  
+      <section className="py-[90px] lg:py-[130px]">
         <Container>
-          <form id="form" onSubmit={handleSubmit}>
-            <div className="mb-6 relative">
-              <input
-                type="text"
-                placeholder="Ismingiz"
-                className={`border-2 ${
-                  errors.name
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-400"
-                } focus:border-mainColor rounded-lg md:rounded-xl py-2 px-3 w-full focus:outline-none`}
-                value={name}
-                onChange={handleNameChange}
-              />
-              {errors.name && (
-                <p className="absolute text-red-500 text-[13px]">
-                  {errors.name}
+          <h1 className="text-[28px] sm:text-[35px] lg:text-[45px] font-bold mb-5">
+            Profile
+          </h1>
+          <div className={`flex gap-40 items-start ${data.length === 0 ? "hidden" : ""}`}>
+            {isLoading ? (
+              <div className="w-[550px] h-[345px] mb-4">
+                <Skeleton style={{ width: "100%", height: "100%", borderRadius: "24px" }} />
+              </div>
+            ) : (
+              <div className="w-[550px] border border-gray-300 rounded-3xl p-7">
+                <p className="font-bold text-[22px] mb-5">
+                  Mening ma’lumotlarim
                 </p>
-              )}
+                <div className="flex items-center justify-between mb-7">
+                  <p className="text-[18px] font-medium">+{data?.login}</p>
+                  <button
+                    onClick={() => setIsOpenModal(true)}
+                    className="py-1 px-2 rounded-md bg-black/5 hover:bg-black/10 duration-200"
+                  >
+                    O’zgartirish
+                  </button>
+                </div>
+                {/* <form onSubmit={handleChange}> */}
+                <div className="flex flex-col gap-4">
+                  <input
+                    className="w-full border-2 text-[18px] border-gray-300 duration-200 focus:border-mainColor rounded-lg md:rounded-lg py-2 px-3 outline-none"
+                    type="text"
+                    placeholder="Ism"
+                    value={data?.firstName}
+                    name="firstName"
+                  />
+                  <input
+                    className="w-full border-2 text-[18px] border-gray-300 duration-200 focus:border-mainColor rounded-lg md:rounded-lg py-2 px-3 outline-none"
+                    type="text"
+                    placeholder="Familiya"
+                    value={data?.lastName}
+                    name="lastName"
+                  />
+                  <button className="w-full h-[50px] bg-mainColor rounded-lg text-[18px] font-medium text-white hover:bg-[#23b574] duration-200">
+                    Saqlash
+                  </button>
+                </div>
+                {/* </form> */}
+              </div>
+            )}
+            <div className="w-[390px] border border-gray-300 rounded-3xl p-7 flex flex-col gap-3">
+              <button className="h-[45px] bg-gray-100 w-full text-start rounded-2xl px-4">
+                Mening ma’lumotlarim
+              </button>
+              <button className="h-[45px] hover:bg-gray-50 w-full text-start duration-200 rounded-2xl px-4">
+                To‘lov kartalari
+              </button>
+              <button className="h-[45px] hover:bg-gray-50 w-full text-start duration-200 rounded-2xl px-4">
+                Yetkazish manzili
+              </button>
+              <button onClick={() => setIsLogoutModalOpen(true)} className="h-[45px] hover:bg-red-50 w-full text-start text-red-500 duration-200 rounded-2xl px-4">
+                Chiqish
+              </button>
             </div>
-
-            <div className="relative">
-              <input
-                className={`border-2 ${
-                  errors.phone_number
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-400"
-                } focus:border-mainColor rounded-lg md:rounded-xl py-2 px-3 w-full focus:outline-none`}
-                type="text"
-                placeholder="Telefon raqamingiz"
-                value={phone_number}
-                onChange={handlePhoneChange}
-                maxLength={16}
-              />
-              {errors.phone_number && (
-                <p className="absolute text-red-500 text-[13px]">
-                  {errors.phone_number}
-                </p>
-              )}
-            </div>
-          </form>
+          </div>
         </Container>
-
-        <div className="w-full pb-[75px] px-6 fixed bottom-0 bg-white">
-          <button
-            disabled={name === "" || phone_number === ""}
-            form="form"
-            className={`w-full h-[40px] rounded-lg md:rounded-xl duration-200 text-white md:text-[18px] font-medium ${
-              name === "" || phone_number === ""
-                ? "bg-[#d7d9db]"
-                : "bg-mainColor active:bg-[#23b574]"
-            }`}
-          >
-            Kirish
-          </button>
-        </div>
       </section>
-      <BottomMenu />
-    </>
+      <Footer />
+    </div>
   );
 };
 
-export default Cart;
+export default Profile;
 
-export const getStaticProps = async ({ locale }:any) => ({
+export const getStaticProps = async ({ locale }: any) => ({
   props: {
-    ...(await serverSideTranslations(locale, ['common'])),
+    ...(await serverSideTranslations(locale, ["common"])),
   },
 });

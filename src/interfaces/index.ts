@@ -3,6 +3,8 @@
 export interface AuthRequest {
     login: (data: any) => any
     activate: (data: any) => any
+    get_token: (data: any) => any
+    get_info: () => any
 }
 
 export interface AuthStore {
@@ -34,4 +36,16 @@ export interface BranchStore {
     branches: any[]
     isLoading: boolean
     getBranchs: () => any
+}
+
+// ----------- Products -----------
+
+export interface ProductsRequest {
+    get_products_by_id: (id:any) => any
+}
+
+export interface ProductStore {
+    products: any[]
+    isLoading: boolean
+    getProductsById: (id:string) => any
 }
