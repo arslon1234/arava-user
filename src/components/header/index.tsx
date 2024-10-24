@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import Image from "next/image";
 import { GrDown, GrLanguage, GrLocation } from "react-icons/gr";
 import { FaCheck } from "react-icons/fa6";
+import { FaRegUser } from "react-icons/fa";
 import Logo from "@/public/icons/logo.png";
 import SearchIcon from "@/public/icons/search-icon.svg";
 import LocationModal from "@/src/modals/location";
@@ -16,6 +17,7 @@ export default function Header() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const [locationName, setLocationName] = useState<string | null>(null);
+  const [activated, setActivated] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
@@ -26,7 +28,7 @@ export default function Header() {
     if (storedLocation) {
       setLocationName(storedLocation);
     }
-  }, []);
+  }, [isLocationModalOpen]);
 
   const handleLanguageChange = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -39,12 +41,18 @@ export default function Header() {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setLanguageDropdownOpen(false);
     }
   };
 
   useEffect(() => {
+    if (localStorage.getItem("access_token")) {
+      setActivated(true);
+    }
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -62,11 +70,18 @@ export default function Header() {
     };
   }, [languageDropdownOpen]);
 
+  // const token = localStorage.getItem("access_token");
   return (
     <>
-      <LocationModal isOpen={isLocationModalOpen} onClose={() => setIsLocationModalOpen(false)} />
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
-      
+      <LocationModal
+        isOpen={isLocationModalOpen}
+        onClose={() => setIsLocationModalOpen(false)}
+      />
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
+
       <header
         className={`border-b border-silver sm:pb-1 bg-[#fff] px-5 xl:px-10 fixed top-0 w-full transition-shadow duration-300 z-30 ${
           scrolling ? "shadow-[0_0_25px_0px_#00000023]" : ""
@@ -81,11 +96,17 @@ export default function Header() {
                   src={Logo}
                   alt="arava logo"
                 />
-                <p className="text-[24px] font-semibold hidden min-[1100px]:block">Aravva</p>
+                <p className="text-[24px] font-semibold hidden min-[1100px]:block">
+                  Aravva
+                </p>
               </div>
             </Link>
             <div className="h-[45px] w-auto relative hidden lg:flex items-center">
-              <Image className="absolute opacity-50 left-3 top-3" src={SearchIcon} alt="search icon" />
+              <Image
+                className="absolute opacity-50 left-3 top-3"
+                src={SearchIcon}
+                alt="search icon"
+              />
               <input
                 className="h-full rounded-l-xl pl-11 pr-5 max:w-[365px] xl:w-[365px] outline-none ring-1 ring-[#9CA3AF] focus:ring-mainColor duration-200"
                 type="text"
@@ -101,7 +122,9 @@ export default function Header() {
                 className="flex items-center gap-2 h-[45px] px-4 duration-200 rounded-xl bg-[#e4e6ea] hover:bg-[#d7dadf]"
               >
                 <GrLocation className="text-[20px]" />
-                <p className="font-medium max-w-[130px] line-clamp-1">{locationName || "Manzilingiz"}</p>
+                <p className="font-medium max-w-[130px] line-clamp-1">
+                  {locationName || "Manzilingiz"}
+                </p>
                 <GrDown />
               </button>
             </div>
@@ -113,7 +136,9 @@ export default function Header() {
               className="flex items-center gap-2 h-[40px] px-2 duration-200 rounded-lg bg-[#e4e6ea] lg:hover:bg-[#d7dadf]"
             >
               <GrLocation className="text-[20px]" />
-              <p className="font-medium text-[14px]">{locationName || "Manzilingiz"}</p>
+              <p className="font-medium max-w-[100px] line-clamp-1 text-[14px]">
+                {locationName || "Manzilingiz"}
+              </p>
               <GrDown />
             </button>
           </div>
@@ -126,7 +151,11 @@ export default function Header() {
               >
                 <GrLanguage className="text-[20px]" />
                 <p className="text-[14px] font-medium">
-                  {i18n.language === "uz" ? "Uzbek" : i18n.language === "ru" ? "Русский" : "English"}
+                  {i18n.language === "uz"
+                    ? "Uzbek"
+                    : i18n.language === "ru"
+                    ? "Русский"
+                    : "English"}
                 </p>
               </button>
 
@@ -144,9 +173,15 @@ export default function Header() {
                     className="cursor-pointer flex items-center justify-between py-[6px] md:py-2 hover:bg-[#e4e6ea9d] duration-300 text-start px-4"
                   >
                     <span className="font-medium text-[14px] md:text-[16px]">
-                      {lang === "uz" ? "Uzbek" : lang === "ru" ? "Русский" : "English"}
+                      {lang === "uz"
+                        ? "Uzbek"
+                        : lang === "ru"
+                        ? "Русский"
+                        : "English"}
                     </span>
-                    {i18n.language === lang && <FaCheck className="text-[14px] md:text-[16px]" />}
+                    {i18n.language === lang && (
+                      <FaCheck className="text-[14px] md:text-[16px]" />
+                    )}
                   </button>
                 ))}
               </div>
@@ -155,9 +190,15 @@ export default function Header() {
             <div className="hidden md:block">
               <button
                 onClick={() => setIsLoginModalOpen(true)}
-                className="h-[45px] px-5 rounded-xl text-[18px] font-medium bg-[#e4e6ea] hover:bg-[#d7dadf] duration-200"
+                className={`h-[45px] px-5 rounded-xl text-[18px] font-medium bg-[#e4e6ea] hover:bg-[#d7dadf] duration-200 ${activated ? "hidden" : ""}`}
               >
                 {t("header_login_button")}
+              </button>
+              <button onClick={() => router.push("/profile")} className={activated ? "md:flex flex-col items-center hidden" : "hidden"}>
+                <span>
+                  <FaRegUser className="text-[22px]" />
+                </span>
+                <span className="font-medium text-[14px]">{t("bottom_menu_profile")}</span>
               </button>
             </div>
           </div>

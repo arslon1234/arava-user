@@ -6,6 +6,7 @@
   "location_modal_title": "Specify a delivery address",
   "location_modal_button": "Confirm",
   "login_modal_title": "Enter your phone number",
+  "login_modal_name" : "Name",
   "login_modal_phone_number": "Phone number",
   "activate_modal_title": "Enter confirmation code",
   "restaurants": "Restaurants",
@@ -14,9 +15,14 @@
   "cart": "Cart",
   "delete_cart": "Delete",
   "add_to_cart": "Add",
+  "cart_button": "For payment",
+  "cart_delivery_title": "Delivery",
   "bottom_menu_restaurants": "Restaurants",
   "bottom_menu_cart": "Cart",
   "bottom_menu_orders": "Orders",
-  "bottom_menu_profile": "Profile"
+  "bottom_menu_profile": "Profile",
+  "profile_title": "Registration",
+  "profile_text": "Enter your phone number so we can send you a verification code",
+  "profile_text2": "Enter the verification code sent to your phone number"
 }
   

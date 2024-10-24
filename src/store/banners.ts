@@ -9,7 +9,7 @@ const useBrandsStore = create<BannerStore>((set) => ({
     set({ isLoading: true });
     try {
       const response = await banners.get_banners();
-      set({ banners: response.data.content });
+      set({ banners: response.data });
     } catch (err) {
       console.error(err);
     } finally {

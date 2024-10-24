@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { GrClose } from "react-icons/gr";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AutrStore from "@/src/store/auth";
-import ActivateModal from "@/src/modals/activation-login"
+import ActivateModal from "@/src/modals/activation-login";
 
 interface ModalProps {
   isOpen: boolean;
@@ -112,8 +113,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     if (validateForm()) {
       try {
         await sign_in(newData);
-        setShowActivateModal(true)
+        setShowActivateModal(true);
       } catch (err) {
+        
         console.error(err);
       }
     }
@@ -121,7 +123,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <ActivateModal isOpen={showActivateModal} close={() => setShowActivateModal(false)} onClose={onClose} phone={phone}/>
+      <ActivateModal
+        isOpen={showActivateModal}
+        close={() => setShowActivateModal(false)}
+        onClose={onClose}
+        phone={phone}
+      />
       <div
         className="fixed inset-0 z-40 flex items-center justify-center bg-black duration-200 bg-opacity-30"
         onClick={handleOverlayClick}
@@ -144,7 +151,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   errors.phone_number
                     ? "border-red-500 focus:border-red-500"
                     : "border-gray-400"
-                } input focus:border-mainColor rounded-lg md:rounded-xl py-2 px-3 w-full focus:outline-none`}
+                } input focus:border-mainColor rounded-lg md:rounded-lg py-2 px-3 w-full focus:outline-none`}
                 type="text"
                 placeholder={t("login_modal_phone_number")}
                 value={phone_number}
@@ -161,13 +168,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             <button
               disabled={phone_number.length === 0 || isLoading}
               type="submit"
-              className={`w-full h-[35px] md:h-[45px] rounded-lg md:rounded-xl duration-200 text-white md:text-[18px] font-medium ${
-                phone_number === "" || isLoading
-                  ? "bg-[#d7d9db]"
+              className={`w-full h-[35px] md:h-[45px] flex items-center justify-center rounded-lg md:rounded-2xl duration-200 text-white md:text-[18px] font-bold ${
+                phone_number === ""
+                  ? "bg-[#c5c7c9] cursor-not-allowed"
                   : "bg-mainColor hover:bg-[#23b574]"
               }`}
             >
-              {t("header_login_button")}
+              {isLoading ? (
+                <AiOutlineLoading3Quarters className="text-[20px] animate-spin" />
+              ) : (
+                t("header_login_button")
+              )}
             </button>
           </form>
         </div>

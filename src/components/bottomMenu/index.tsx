@@ -30,9 +30,9 @@ const BottomMenu = () => {
           <OrderIcon color={pathname === "/orders" ? "#0BCB76" : "#9F99A7"}/>
           <p className={`text-[12px] ${pathname === "/orders" ? "text-[#0BCB76]" : "text-[#9F99A7]"}`}>{t("bottom_menu_orders")}</p>
         </button>
-        <button onClick={() => router.push("/profile")} className="flex flex-col items-center  gap-[1px] py-[6px] min-w-[70px]">
-          <UserIcon color={pathname === "/profile" ? "#0BCB76" : "#9F99A7"}/>
-          <p className={`text-[12px] ${pathname === "/profile" ? "text-[#0BCB76]" : "text-[#9F99A7]"}`}>{t("bottom_menu_profile")}</p>
+        <button onClick={() => router.push("/profile-mobile")} className="flex flex-col items-center  gap-[1px] py-[6px] min-w-[70px]">
+          <UserIcon color={pathname === "/profile-mobile" || pathname === "/profile-info" ? "#0BCB76" : "#9F99A7"}/>
+          <p className={`text-[12px] ${pathname === "/profile-mobile" || pathname === "/profile-info" ? "text-[#0BCB76]" : "text-[#9F99A7]"}`}>{t("bottom_menu_profile")}</p>
         </button>
       </div>
     </div>

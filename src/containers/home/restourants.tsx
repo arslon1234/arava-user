@@ -1,13 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
+import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 import { TbTruckDelivery } from "react-icons/tb";
 import { GrStar } from "react-icons/gr";
 import Container from "../container";
 import SearchIcon from "@/public/icons/search-icon.svg";
-import Image from "next/image";
-import Link from "next/link";
+import NoImage from "@/public/images/no-image.png"
 
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -19,11 +20,14 @@ const Restourants = () => {
   useEffect(() => {
     getBranchs();
   }, []);
+  
   const { t } = useTranslation();
   useEffect(() => {
     setMounted(true);
   }, []);
+
   if (!mounted) return null;
+
   return (
     <section className="pb-14 md:pb-24">
       <Container>
@@ -39,6 +43,7 @@ const Restourants = () => {
             placeholder={t("search_placeholder")}
           />
         </div>
+
         <div className="pb-4 md:pb-5">
           {isLoading ? (
             <div className="h-[25px] sm:h-[35px] mb-4 sm:mb-5 lg:mb-7">
@@ -50,140 +55,33 @@ const Restourants = () => {
             </h1>
           )}
         </div>
+
         {isLoading ? (
           <div className="grid grid-cols-1 min-[470px]:grid-cols-2 md:grid-cols-3 gap-7 sm:gap-8 lg:gap-10">
-            <div className="min-h-[290px]">
-              <div className="h-[200px] mb-[12px]">
+            {[...Array(6)].map((_, i) => (
+              <div className="min-h-[290px]" key={i}>
+                <div className="h-[200px] mb-[12px]">
+                  <Skeleton
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      borderRadius: "16px 16px 0 0",
+                    }}
+                  />
+                </div>
                 <Skeleton
                   style={{
-                    height: "100%",
-                    width: "100%",
-                    borderRadius: "16px 16px 0 0",
+                    marginLeft: "12px",
+                    width: "50%",
+                    height: "20px",
+                    marginBottom: "17px",
                   }}
                 />
+                <div className="px-3">
+                  <Skeleton />
+                </div>
               </div>
-              <Skeleton
-                style={{
-                  marginLeft: "12px",
-                  width: "50%",
-                  height: "20px",
-                  marginBottom: "17px",
-                }}
-              />
-              <div className="px-3">
-                <Skeleton />
-              </div>
-            </div>
-            <div className="min-h-[290px]">
-              <div className="h-[200px] mb-[12px]">
-                <Skeleton
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    borderRadius: "16px 16px 0 0",
-                  }}
-                />
-              </div>
-              <Skeleton
-                style={{
-                  marginLeft: "12px",
-                  width: "50%",
-                  height: "20px",
-                  marginBottom: "17px",
-                }}
-              />
-              <div className="px-3">
-                <Skeleton />
-              </div>
-            </div>
-            <div className="min-h-[290px]">
-              <div className="h-[200px] mb-[12px]">
-                <Skeleton
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    borderRadius: "16px 16px 0 0",
-                  }}
-                />
-              </div>
-              <Skeleton
-                style={{
-                  marginLeft: "12px",
-                  width: "50%",
-                  height: "20px",
-                  marginBottom: "17px",
-                }}
-              />
-              <div className="px-3">
-                <Skeleton />
-              </div>
-            </div>
-            <div className="min-h-[290px]">
-              <div className="h-[200px] mb-[12px]">
-                <Skeleton
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    borderRadius: "16px 16px 0 0",
-                  }}
-                />
-              </div>
-              <Skeleton
-                style={{
-                  marginLeft: "12px",
-                  width: "50%",
-                  height: "20px",
-                  marginBottom: "17px",
-                }}
-              />
-              <div className="px-3">
-                <Skeleton />
-              </div>
-            </div>
-            <div className="min-h-[290px]">
-              <div className="h-[200px] mb-[12px]">
-                <Skeleton
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    borderRadius: "16px 16px 0 0",
-                  }}
-                />
-              </div>
-              <Skeleton
-                style={{
-                  marginLeft: "12px",
-                  width: "50%",
-                  height: "20px",
-                  marginBottom: "17px",
-                }}
-              />
-              <div className="px-3">
-                <Skeleton />
-              </div>
-            </div>
-            <div className="min-h-[290px]">
-              <div className="h-[200px] mb-[12px]">
-                <Skeleton
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    borderRadius: "16px 16px 0 0",
-                  }}
-                />
-              </div>
-              <Skeleton
-                style={{
-                  marginLeft: "12px",
-                  width: "50%",
-                  height: "20px",
-                  marginBottom: "17px",
-                }}
-              />
-              <div className="px-3">
-                <Skeleton />
-              </div>
-            </div>
+            ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 min-[470px]:grid-cols-2 md:grid-cols-3 gap-7 sm:gap-8 lg:gap-10">
@@ -194,8 +92,8 @@ const Restourants = () => {
                     <Image
                       width={600}
                       height={400}
-                      src={`https://webtest.aravva.uz${item.imageUrl}`}
-                      alt="restourant"
+                      src={item.imageUrl && item.imageUrl !== 'false' ? `https://webtest.aravva.uz${item.imageUrl}` : NoImage}
+                      alt="restaurant"
                       className="w-full h-full object-cover"
                     />
                   </div>

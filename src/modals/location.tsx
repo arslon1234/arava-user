@@ -20,6 +20,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const { t } = useTranslation();
+
+  const saveLocation = () => {
+    if (latitude !== null && longitude !== null) {
+      localStorage.setItem("location_name", locationName);
+      localStorage.setItem(
+        "location_coordinates",
+        JSON.stringify({ lat: latitude, lon: longitude })
+      );
+      onClose();
+    }
+  };
   
   useEffect(() => {
     if (isOpen) {
@@ -121,17 +132,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const saveLocation = () => {
-    if (latitude !== null && longitude !== null) {
-      localStorage.setItem("location_name", locationName);
-      localStorage.setItem(
-        "location_coordinates",
-        JSON.stringify({ lat: latitude, lon: longitude })
-      );
-      onClose();
-    }
-  };
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black duration-200 bg-opacity-30"
@@ -188,9 +188,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <button
             disabled={locationName.length === 0}
             onClick={saveLocation}
-            className={`w-full text-white text-[18px] font-medium rounded-lg py-2 duration-200 ${
+            className={`w-full text-white text-[16px] md:text-[18px] font-bold rounded-2xl h-[45px] duration-200 ${
               locationName.length === 0
-                ? "bg-[#d7d9db]"
+                ? "bg-[#c5c7c9]"
                 : "bg-mainColor active:bg-[#23b574] md:hover:bg-[#23b574]"
             }`}
           >

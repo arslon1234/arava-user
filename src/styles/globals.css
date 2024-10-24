@@ -3,33 +3,51 @@
 @tailwind utilities;
 
 .ymaps-2-1-79-map-copyrights-promo {
-    display: none;
+  display: none;
+}
+
+.ymaps-2-1-79-searchbox {
+  display: none;
+}
+
+.ymaps-2-1-79-controls__toolbar_right {
+  display: none;
+}
+
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  
-  .ymaps-2-1-79-searchbox {
-    display: none;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .ymaps-2-1-79-controls__toolbar_right{
-    display: none;
-  }
-  
-  @keyframes modalOpen {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    
-    .modal-enter {
-      animation: modalOpen 0.2s ease-out;
-    }
-    
-    .modal-exit {
-      animation: modalOpen 0.2s ease-in reverse;
-    }
-    
+}
+
+.modal-enter {
+  animation: modalOpen 0.2s ease-out;
+}
+
+.modal-exit {
+  animation: modalOpen 0.2s ease-in reverse;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0000001f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0BCB76;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #23b574;
+}
