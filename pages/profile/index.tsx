@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Skeleton from "react-loading-skeleton";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Toaster, toast } from "react-hot-toast";
 import { auth } from "@/src/services/auth";
 import Container from "@/src/containers/container";
 import LoginModal from "@/src/modals/login";
@@ -11,6 +13,7 @@ import LogoutModal from "@/src/modals/logout";
 const Profile = () => {
   const [data, setData]: any = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const getData = async () => {
@@ -29,34 +32,50 @@ const Profile = () => {
     getData();
   }, []);
 
-  //   const handleChange = async (e: any) => {
-  //     e.preventDefault();
-  //     const newData = {
-  //       phone: data?.login,
-  //       firstname: e.target[0].value,
-  //       lastName: e.target[1].value
-  //     };
-  //     try {
-  //       const res = await auth.login(newData);
-  //       console.log(res);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
+  const handleChange = async (e: any) => {
+    e.preventDefault();
+    const newData = {
+      firstName: e.target[0].value,
+      lastName: e.target[1].value,
+    };
+    setIsButtonLoading(true);
+    try {
+      await auth.update_info(newData);
+      toast.success("Malumotlaringiz yangilandi!");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsButtonLoading(false);
+    }
+  };
 
   return (
     <div className="hidden md:block">
       <LoginModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} />
-      <LogoutModal isOpen={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)}/>  
+      <LogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+      />
+      <Toaster />
       <section className="py-[90px] lg:py-[130px]">
         <Container>
           <h1 className="text-[28px] sm:text-[35px] lg:text-[45px] font-bold mb-5">
             Profile
           </h1>
-          <div className={`flex gap-40 items-start ${data.length === 0 ? "hidden" : ""}`}>
+          <div
+            className={`flex gap-40 items-start ${
+              data.length === 0 ? "hidden" : ""
+            }`}
+          >
             {isLoading ? (
               <div className="w-[550px] h-[345px] mb-4">
-                <Skeleton style={{ width: "100%", height: "100%", borderRadius: "24px" }} />
+                <Skeleton
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "24px",
+                  }}
+                />
               </div>
             ) : (
               <div className="w-[550px] border border-gray-300 rounded-3xl p-7">
@@ -72,27 +91,35 @@ const Profile = () => {
                     O’zgartirish
                   </button>
                 </div>
-                {/* <form onSubmit={handleChange}> */}
-                <div className="flex flex-col gap-4">
-                  <input
-                    className="w-full border-2 text-[18px] border-gray-300 duration-200 focus:border-mainColor rounded-lg md:rounded-lg py-2 px-3 outline-none"
-                    type="text"
-                    placeholder="Ism"
-                    value={data?.firstName}
-                    name="firstName"
-                  />
-                  <input
-                    className="w-full border-2 text-[18px] border-gray-300 duration-200 focus:border-mainColor rounded-lg md:rounded-lg py-2 px-3 outline-none"
-                    type="text"
-                    placeholder="Familiya"
-                    value={data?.lastName}
-                    name="lastName"
-                  />
-                  <button className="w-full h-[50px] bg-mainColor rounded-lg text-[18px] font-medium text-white hover:bg-[#23b574] duration-200">
-                    Saqlash
-                  </button>
-                </div>
-                {/* </form> */}
+                <form onSubmit={handleChange}>
+                  <div className="flex flex-col gap-4">
+                    <input
+                      className="w-full border-2 text-[18px] border-gray-300 duration-200 focus:border-mainColor rounded-lg md:rounded-lg py-2 px-3 outline-none"
+                      type="text"
+                      placeholder="Ism"
+                      defaultValue={data?.firstName}
+                      name="firstName"
+                    />
+                    <input
+                      className="w-full border-2 text-[18px] border-gray-300 duration-200 focus:border-mainColor rounded-lg md:rounded-lg py-2 px-3 outline-none"
+                      type="text"
+                      placeholder="Familiya"
+                      defaultValue={data?.lastName}
+                      name="lastName"
+                    />
+                    <button
+                      disabled={isButtonLoading}
+                      className={`w-full h-[50px] flex items-center justify-center rounded-lg text-[18px] font-medium text-white duration-200 ${
+                        isButtonLoading ? "bg-[#c5c7c9]" : "bg-mainColor hover:bg-[#23b574]"
+                      }`}
+                    >
+                      {isButtonLoading ? (
+                        <AiOutlineLoading3Quarters className="text-[20px] animate-spin" />
+                      ) : "Saqlash"
+                    }
+                    </button>
+                  </div>
+                </form>
               </div>
             )}
             <div className="w-[390px] border border-gray-300 rounded-3xl p-7 flex flex-col gap-3">
@@ -105,7 +132,10 @@ const Profile = () => {
               <button className="h-[45px] hover:bg-gray-50 w-full text-start duration-200 rounded-2xl px-4">
                 Yetkazish manzili
               </button>
-              <button onClick={() => setIsLogoutModalOpen(true)} className="h-[45px] hover:bg-red-50 w-full text-start text-red-500 duration-200 rounded-2xl px-4">
+              <button
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="h-[45px] hover:bg-red-50 w-full text-start text-red-500 duration-200 rounded-2xl px-4"
+              >
                 Chiqish
               </button>
             </div>

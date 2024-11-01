@@ -5,6 +5,7 @@ export interface AuthRequest {
     activate: (data: any) => any
     get_token: (data: any) => any
     get_info: () => any
+    update_info: (data:any) => any
 }
 
 export interface AuthStore {

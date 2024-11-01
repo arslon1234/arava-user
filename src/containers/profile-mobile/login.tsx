@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
 import Container from "@/src/containers/container";
@@ -18,7 +17,6 @@ const Login = () => {
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { t } = useTranslation();
-  const router = useRouter();
   const validatePhone = (phone_number: string): string => {
     return phone_number.length === 16
       ? ""
@@ -153,10 +151,10 @@ const Login = () => {
       <section className="md:hidden min-h-screen pt-[90px] lg:pt-[130px]">
         <Container>
           <div className="mb-7">
-            <h1 className="text-[32px] font-semibold mb-3">
+            <h1 className="text-[28px] font-semibold mb-3">
               {t("profile_title")}
             </h1>
-            <p className="text-[18px] text-gray-500 font-medium">
+            <p className="text-gray-400 font-medium">
               {isCodeStep ? t("profile_text2") : t("profile_text")}
             </p>
           </div>
@@ -167,13 +165,14 @@ const Login = () => {
                   className={`border-2 ${
                     errors.phone_number
                       ? "border-red-500 focus:border-red-500"
-                      : "border-gray-400"
+                      : "border-gray-300"
                   } focus:border-mainColor text-[18px] font-medium rounded-lg md:rounded-xl py-2 px-3 w-full focus:outline-none`}
                   type="text"
                   placeholder={t("login_modal_phone_number")}
                   value={phone_number}
                   onChange={handlePhoneChange}
                   maxLength={16}
+                  inputMode="numeric"
                 />
                 {errors.phone_number && (
                   <p className="absolute text-red-500 text-[13px]">
@@ -193,7 +192,7 @@ const Login = () => {
                     value={digit}
                     onChange={(e) => handleCodeChange(e, index)}
                     className={`border-2 text-center text-lg focus:border-mainColor font-medium ${
-                      errors.code ? "border-red-500" : "border-gray-400"
+                      errors.code ? "border-red-500" : "border-gray-300"
                     } w-10 h-12 rounded-md focus:outline-none`}
                     maxLength={1}
                     inputMode="numeric"

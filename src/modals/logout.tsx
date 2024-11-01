@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,7 +7,6 @@ interface ModalProps {
 }
 
 const LogoutModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const router = useRouter()
 
   useEffect(() => {
     if (isOpen) {
@@ -34,11 +33,8 @@ const LogoutModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   };
 
   const logOut = () => {
-    router.push("/");
     localStorage.removeItem("access_token");
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    window.location.replace("/")
   }
   return (
     <div
